@@ -1,13 +1,13 @@
 public class Solution {
-    private float imaginary;
-    private float real;
+    private double imaginary;
+    private double real;
 
-    Solution(float real) {
+    Solution(double real) {
         this.real = real;
-        this.imaginary = 0.0f;
+        this.imaginary = 0.0;
     }
 
-    Solution(float real, float imaginary) {
+    Solution(double real, double imaginary) {
         this.real = real;
         this.imaginary = imaginary;
     }
@@ -20,7 +20,7 @@ public class Solution {
                 return "(" + this.imaginary + ")i + (" + this.real + ")";
             }
         } else {
-            return Float.toString(this.real);
+            return Double.toString(this.real);
         }
     }
 }

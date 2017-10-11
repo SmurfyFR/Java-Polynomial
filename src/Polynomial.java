@@ -59,7 +59,7 @@ public class Polynomial {
         this.solutions.clear();
         switch(this.getDegree()) {
             case 3: // Cubic
-                System.out.println("Not impl.");
+                this.processCubicRoots();
                 break;
             case 2: // Quadratic
                 this.processQuadraticRoots();
@@ -83,7 +83,7 @@ public class Polynomial {
             // Note that if b != 0, there is NO solutions
         } else {
             // x1 = -b / a
-            this.solutions.add(new Solution((float) (-this.coefficients[0]) / (float) (this.coefficients[1])));
+            this.solutions.add(new Solution((double) (-this.coefficients[0]) / (double) (this.coefficients[1])));
         }
 
         return this.solutions;
@@ -100,29 +100,29 @@ public class Polynomial {
 
         if(discriminant == 0) {
             this.solutions.add(new Solution(
-                    (float) (-this.coefficients[1]) / (float) (2 * this.coefficients[2])
+                    (double) (-this.coefficients[1]) / (double) (2 * this.coefficients[2])
             ));
         } else if(discriminant > 0) {
             // first solution
             this.solutions.add(new Solution(
-                    (float) (-this.coefficients[1] + Math.sqrt(discriminant)) / (float) (2 * this.coefficients[2])
+                    (double) (-this.coefficients[1] + Math.sqrt(discriminant)) / (double) (2 * this.coefficients[2])
             ));
 
             // second solution
             this.solutions.add(new Solution(
-                    (float) (-this.coefficients[1] - Math.sqrt(discriminant)) / (float) (2 * this.coefficients[2])
+                    (double) (-this.coefficients[1] - Math.sqrt(discriminant)) / (double) (2 * this.coefficients[2])
             ));
         } else {
             // first solution
             this.solutions.add(new Solution(
-                    (float) (-this.coefficients[1]) / (float) (2 * this.coefficients[2]),
-                    (float) (Math.sqrt(Math.abs(discriminant))) / (float) (2 * this.coefficients[2])
+                    (double) (-this.coefficients[1]) / (double) (2 * this.coefficients[2]),
+                    (double) (Math.sqrt(Math.abs(discriminant))) / (double) (2 * this.coefficients[2])
             ));
 
             // second solution
             this.solutions.add(new Solution(
-                    (float) (-this.coefficients[1]) / (float) (2 * this.coefficients[2]),
-                    (float) - (Math.sqrt(Math.abs(discriminant))) / (float) (2 * this.coefficients[2])
+                    (double) (-this.coefficients[1]) / (double) (2 * this.coefficients[2]),
+                    (double) - (Math.sqrt(Math.abs(discriminant))) / (double) (2 * this.coefficients[2])
             ));
         }
 
@@ -133,22 +133,37 @@ public class Polynomial {
      * Fills solutions for the cubic equation into this.solutions ArrayList
      */
     protected List<Solution> processCubicRoots()  {
-        // Note : a at index 3, b at index 2, c at index 1, d at index 0
-        double discriminant = 0;
-        // 18abcd - 4 * b^3 * d + b^2 * c^2 - 4 * a * c^3 - 27 * a^2 * d^2
-        //discriminant = (18 * this.coefficients[3] * this.coefficients[2] * this.coefficients[1] * this.coefficients[0])
-                //- (4 * Math.pow(this.coefficients[2], 3) + this.coefficients[0])
-                //+ (Math.pow(this.coefficients[2], 2) * Math.pow(this.coefficients[1], 2))
-                //- (4 * this.coefficients[3] * Math.pow(this.coefficients[1], 3))
-                //- (27 * Math.pow(this.coefficients[3], 2) * Math.pow(this.coefficients[0], 2));
+        double norm = this.coefficients[3]; // norm = a
+        double a = this.coefficients[2] / norm; // a = b / norm
+        double b = this.coefficients[1] / norm; // b = c / norm
+        double c = this.coefficients[0] / norm; // c = d / norm
 
-        //if(discriminant == 0) {
-            // One solution uniq
-        //} else if(discriminant > 0) {
-            // 3 solutions
-        //} else {
-            // Complex
-        //}
+        double a_over_3 = a / 3.0;
+        double Q = (3*b - a*a) / 9.0;
+        double Q_CUBE = Q*Q*Q;
+        double R = (9*a*b - 27*c - 2*a*a*a) / 54.0;
+        double R_SQR = R*R;
+        double D = Q_CUBE + R_SQR;
+
+        if (D < 0.0) {
+            // Three unequal real roots.
+            double theta = Math.acos (R / Math.sqrt(-Q_CUBE));
+            double SQRT_Q = Math.sqrt(-Q);
+            this.solutions.add(new Solution(2.0 * SQRT_Q * Math.cos (theta/3.0) - a_over_3));
+            this.solutions.add(new Solution(2.0 * SQRT_Q * Math.cos ((theta+(2*Math.PI))/3.0) - a_over_3));
+            this.solutions.add(new Solution(2.0 * SQRT_Q * Math.cos ((theta+(4*Math.PI))/3.0) - a_over_3));
+        } else if (D > 0.0) {
+            // One real solution
+            double SQRT_D = Math.sqrt (D);
+            double S = Math.cbrt (R + SQRT_D);
+            double T = Math.cbrt (R - SQRT_D);
+            this.solutions.add(new Solution((S + T) - a_over_3));
+        } else {
+            // Three real roots, at least two equal.
+            double CBRT_R = Math.cbrt (R);
+            this.solutions.add(new Solution(2*CBRT_R - a_over_3));
+            this.solutions.add(new Solution(CBRT_R - a_over_3));
+        }
 
         return this.solutions;
     }
