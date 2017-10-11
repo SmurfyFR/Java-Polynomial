@@ -9,7 +9,10 @@ public class Main {
     public static final int ASCII_A = 97;
 
     public static void main(String[] args) {
-        System.out.println(Math.abs(-30));
+
+        MathWrapper.useJavaMath(false);
+        System.out.println("pow(2, 10)" + MathWrapper.pow(1,10));
+        System.out.println(MathWrapper.abs(-30));
 
         Scanner sc = new Scanner(System.in);
         int degree = 1;
@@ -41,16 +44,41 @@ public class Main {
         polynome.print();
         System.out.println(" = 0");
 
-        List<Solution> solutions;
-        solutions = polynome.getRoots();
+        /**
+         * With Java.util.Math
+         */
+        System.out.println("[INFO] Using Math library");
+        MathWrapper.useJavaMath(true);
+        List<Solution> solutionsWithJavaMath;
+        solutionsWithJavaMath = polynome.getRoots();
 
         if(polynome.hasInfiniteSolutions()) {
             System.out.println("Every number is a solution ...");
         } else {
-            System.out.println("Found " + solutions.size() + " solutions.");
+            System.out.println("Found " + solutionsWithJavaMath.size() + " solutions.");
 
             int solutionIndex = 0;
-            for (Solution item : solutions) {
+            for (Solution item : solutionsWithJavaMath) {
+                System.out.println("x" + solutionIndex + " = " + item.getStr());
+                solutionIndex++;
+            }
+        }
+
+        /**
+         * Without Java.util.Math
+         */
+        System.out.println("[INFO] Using own Math implementation");
+        MathWrapper.useJavaMath(false);
+        List<Solution> solutionsWithoutJavaMath;
+        solutionsWithoutJavaMath = polynome.getRoots();
+
+        if(polynome.hasInfiniteSolutions()) {
+            System.out.println("Every number is a solution ...");
+        } else {
+            System.out.println("Found " + solutionsWithoutJavaMath.size() + " solutions.");
+
+            int solutionIndex = 0;
+            for (Solution item : solutionsWithoutJavaMath) {
                 System.out.println("x" + solutionIndex + " = " + item.getStr());
                 solutionIndex++;
             }

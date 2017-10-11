@@ -48,7 +48,7 @@ public class Polynomial {
             System.out.printf("(%d * x^2) + ", coefficients[2]);
         }
         if(this.getDegree() >= 1) {
-            System.out.printf("(%d * x) + %d", coefficients[1], coefficients[0]);
+            System.out.printf("(%d * x) + (%d)", coefficients[1], coefficients[0]);
         }
     }
 
@@ -96,7 +96,7 @@ public class Polynomial {
         // Note : a at index 2, b at index 1, c at index 0
         double discriminant = 0;
         // d = b^2 - 4ac
-        discriminant = Math.pow(this.coefficients[1], 2) - 4 * this.coefficients[2] * this.coefficients[0];
+        discriminant = MathWrapper.pow(this.coefficients[1], 2) - 4 * this.coefficients[2] * this.coefficients[0];
 
         if(discriminant == 0) {
             this.solutions.add(new Solution(
@@ -105,24 +105,24 @@ public class Polynomial {
         } else if(discriminant > 0) {
             // first solution
             this.solutions.add(new Solution(
-                    (double) (-this.coefficients[1] + Math.sqrt(discriminant)) / (double) (2 * this.coefficients[2])
+                    (double) (-this.coefficients[1] + MathWrapper.sqrt(discriminant)) / (double) (2 * this.coefficients[2])
             ));
 
             // second solution
             this.solutions.add(new Solution(
-                    (double) (-this.coefficients[1] - Math.sqrt(discriminant)) / (double) (2 * this.coefficients[2])
+                    (double) (-this.coefficients[1] - MathWrapper.sqrt(discriminant)) / (double) (2 * this.coefficients[2])
             ));
         } else {
             // first solution
             this.solutions.add(new Solution(
                     (double) (-this.coefficients[1]) / (double) (2 * this.coefficients[2]),
-                    (double) (Math.sqrt(Math.abs(discriminant))) / (double) (2 * this.coefficients[2])
+                    (double) (MathWrapper.sqrt(MathWrapper.abs(discriminant))) / (double) (2 * this.coefficients[2])
             ));
 
             // second solution
             this.solutions.add(new Solution(
                     (double) (-this.coefficients[1]) / (double) (2 * this.coefficients[2]),
-                    (double) - (Math.sqrt(Math.abs(discriminant))) / (double) (2 * this.coefficients[2])
+                    (double) - (MathWrapper.sqrt(MathWrapper.abs(discriminant))) / (double) (2 * this.coefficients[2])
             ));
         }
 
@@ -147,20 +147,20 @@ public class Polynomial {
 
         if (D < 0.0) {
             // Three unequal real roots.
-            double theta = Math.acos (R / Math.sqrt(-Q_CUBE));
-            double SQRT_Q = Math.sqrt(-Q);
-            this.solutions.add(new Solution(2.0 * SQRT_Q * Math.cos (theta/3.0) - a_over_3));
-            this.solutions.add(new Solution(2.0 * SQRT_Q * Math.cos ((theta+(2*Math.PI))/3.0) - a_over_3));
-            this.solutions.add(new Solution(2.0 * SQRT_Q * Math.cos ((theta+(4*Math.PI))/3.0) - a_over_3));
+            double theta = MathWrapper.acos (R / MathWrapper.sqrt(-Q_CUBE));
+            double SQRT_Q = MathWrapper.sqrt(-Q);
+            this.solutions.add(new Solution(2.0 * SQRT_Q * MathWrapper.cos (theta/3.0) - a_over_3));
+            this.solutions.add(new Solution(2.0 * SQRT_Q * MathWrapper.cos ((theta+(2* MathWrapper.PI))/3.0) - a_over_3));
+            this.solutions.add(new Solution(2.0 * SQRT_Q * MathWrapper.cos ((theta+(4* MathWrapper.PI))/3.0) - a_over_3));
         } else if (D > 0.0) {
             // One real solution
-            double SQRT_D = Math.sqrt (D);
-            double S = Math.cbrt (R + SQRT_D);
-            double T = Math.cbrt (R - SQRT_D);
+            double SQRT_D = MathWrapper.sqrt (D);
+            double S = MathWrapper.cbrt (R + SQRT_D);
+            double T = MathWrapper.cbrt (R - SQRT_D);
             this.solutions.add(new Solution((S + T) - a_over_3));
         } else {
             // Three real roots, at least two equal.
-            double CBRT_R = Math.cbrt (R);
+            double CBRT_R = MathWrapper.cbrt (R);
             this.solutions.add(new Solution(2*CBRT_R - a_over_3));
             this.solutions.add(new Solution(CBRT_R - a_over_3));
         }
