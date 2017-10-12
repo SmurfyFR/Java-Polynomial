@@ -1,13 +1,23 @@
 public class MathWrapper {
     protected static boolean useJavaMath = false;
 
+    /**
+     * Do we need to use Java Math library or our own implementations ?
+     */
     public static void useJavaMath(boolean use) {
         MathWrapper.useJavaMath = use;
     }
 
+    /**
+     * PI is defined here (same as Math.PI)
+     * EPSILON is to fix the precision of our approximations
+     */
     public static final double PI = 3.14159265358979323846;
     public static final double EPSILON = 0.000001;
 
+    /**
+     * Returns the base^(exponent) using recursivity (2^3 = 2 * 2^2 = 2 * 2 * 2 * 1)
+     */
     public static double pow(double base, double exponent) {
         if(MathWrapper.useJavaMath) {
             return Math.pow(base, exponent);
@@ -17,6 +27,9 @@ public class MathWrapper {
         }
     }
 
+    /**
+     * Returns an approach of sqrt(a)
+     */
     public static double sqrt(double a) {
         if(MathWrapper.useJavaMath) {
             return Math.sqrt(a);
@@ -38,6 +51,9 @@ public class MathWrapper {
         }
     }
 
+    /**
+     * Returns an approach of cubic root of a
+     */
     public static double cbrt(double a) {
         if(MathWrapper.useJavaMath) {
             return Math.cbrt(a);
@@ -53,6 +69,9 @@ public class MathWrapper {
         }
     }
 
+    /**
+     * Returns absolute value of a
+     */
     public static double abs(double a) {
         if(MathWrapper.useJavaMath) {
             return Math.abs(a);
@@ -65,6 +84,9 @@ public class MathWrapper {
         }
     }
 
+    /**
+     * Returns factorial a (recursivity)
+     */
     public static int factorial(int a) {
         if(a == 0.0) {
             return 1;
@@ -73,6 +95,9 @@ public class MathWrapper {
         }
     }
 
+    /**
+     * Limited development of cos(a) at degree 8
+     */
     public static double cos(double a) {
         if(MathWrapper.useJavaMath) {
             return Math.cos(a);
@@ -90,6 +115,9 @@ public class MathWrapper {
         }
     }
 
+    /**
+     * Limited development of arccos(a) at degree 3
+     */
     public static double acos(double a) {
         if(MathWrapper.useJavaMath) {
             return Math.acos(a);
