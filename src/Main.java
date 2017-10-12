@@ -11,8 +11,6 @@ public class Main {
     public static void main(String[] args) {
 
         MathWrapper.useJavaMath(false);
-        System.out.println("pow(2, 10)" + MathWrapper.pow(1,10));
-        System.out.println(MathWrapper.abs(-30));
 
         Scanner sc = new Scanner(System.in);
         int degree = 1;
